@@ -2271,3 +2271,27 @@ gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type)
       return (GIInfoType) blob_type;
     }
 }
+
+/**
+ * gi_repository_get_default:
+ *
+ * Returns the singleton process-global default #GIRepository.
+ *
+ * Returns: (transfer none): The global singleton #GIRepository
+ *
+ * Since: 2.86
+ */
+GIRepository *
+gi_repository_get_default (void)
+{
+  static GIRepository *instance;
+
+  if (g_once_init_enter (&instance))
+    {
+      GIRepository *repository = gi_repository_new ();
+      g_object_add_weak_pointer (G_OBJECT (repository), (gpointer *)&instance);
+      g_once_init_leave (&instance, repository);
+    }
+
+  return instance;
+}
