@@ -2275,7 +2275,13 @@ gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type)
 /**
  * gi_repository_get_default:
  *
- * Returns the singleton process-global default #GIRepository.
+ * Returns the singleton process-global default `GIRepository`.
+ * 
+ * The singleton is needed for situations where you must coordinate between
+ * bindings and libraries which also need to interact with introspection which
+ * could affect the bindings. For example, a Python application using a
+ * GObject-based library through GIRepository to load plugins also in written
+ * Python.
  *
  * Returns: (transfer none): The global singleton #GIRepository
  *
